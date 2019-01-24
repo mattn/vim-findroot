@@ -1,5 +1,5 @@
 function! s:findroot()
-  let l:bufname = bufname('.') |
+  let l:bufname = expand('%:p') |
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
   endif
