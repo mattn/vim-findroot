@@ -3,9 +3,7 @@ function! s:findroot(echo)
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
   endif
-  let l:dir = fnamemodify(l:bufname, ':p:h')
-
-  let l:dir = escape(fnamemodify(getcwd(), ':p:h:gs!\!/!'), ' ')
+  let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
   for l:pattern in l:patterns 
     if l:pattern =~# '/$'
