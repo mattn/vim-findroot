@@ -5,7 +5,7 @@ function! s:findroot()
   endif
   let l:dir = fnamemodify(l:bufname, ':p:h')
 
-  exe 'cd' l:dir
+  exe 'lcd' l:dir
   let l:dir = escape(fnamemodify(getcwd(), ':p:h:gs!\!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
   for l:pattern in l:patterns 
