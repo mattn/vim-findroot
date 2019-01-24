@@ -3,9 +3,10 @@ function! s:findroot()
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
   endif
-  let l:dir = escape(fnamemodify(l:bufname, ':p:h'), ' ')
+  let l:dir = fnamemodify(l:bufname, ':p:h')
 
   exe 'lcd' l:dir
+  let l:dir = escape(fnamemodify(l:dir, ':p:h'), ' \')
   let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
   for l:pattern in l:patterns 
     if l:pattern[-1] == '/'
@@ -19,6 +20,8 @@ function! s:findroot()
     endif
   endfor
 endfunction
+
+command! FindRoot call s:findroot()
 
 augroup FindRoot
   au!
