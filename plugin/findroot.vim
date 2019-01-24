@@ -6,7 +6,7 @@ function! s:findroot()
   let l:dir = escape(fnamemodify(l:bufname, ':p:h'), ' ')
 
   exe 'lcd' l:dir
-  let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/'])
+  let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
   for l:pattern in l:patterns 
     if l:pattern[-1] == '/'
       let l:match = finddir(l:pattern, l:dir . ';')
