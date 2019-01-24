@@ -1,4 +1,4 @@
-function! s:findroot(echo)
+function! s:findroot(echo) abort
   let l:bufname = expand('%:p')
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
