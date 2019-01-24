@@ -1,4 +1,4 @@
-function! s:findroot()
+function! s:findroot(echo)
   let l:bufname = expand('%:p') |
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
@@ -19,15 +19,19 @@ function! s:findroot()
       if l:match =~# '[\/]$'
         let l:match = l:match[:-2]
       endif
-      exe 'lcd' fnamemodify(l:match, ':h')
+      let l:dir = fnamemodify(l:match, ':h')
+      exe 'lcd' l:dir
+      if a:echo
+        echo l:dir
+      endif
       return
     endif
   endfor
 endfunction
 
-command! FindRoot call s:findroot()
+command! FindRoot call s:findroot(1)
 
 augroup FindRoot
   au!
-  exe 'autocmd BufEnter ' . get(g:, 'findroot_mask', '*') . ' :call s:findroot()'
+  exe 'autocmd BufEnter ' . get(g:, 'findroot_mask', '*') . ' :call s:findroot(0)'
 augroup END
