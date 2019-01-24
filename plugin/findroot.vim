@@ -5,16 +5,20 @@ function! s:findroot()
   endif
   let l:dir = fnamemodify(l:bufname, ':p:h')
 
-  exe 'lcd' l:dir
-  let l:dir = escape(fnamemodify(l:dir, ':p:h'), ' \')
+  exe 'cd' l:dir
+  let l:dir = escape(fnamemodify(getcwd(), ':p:h:gs!\!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
   for l:pattern in l:patterns 
-    if l:pattern[-1] == '/'
+    if l:pattern =~# '/$'
       let l:match = finddir(l:pattern, l:dir . ';')
     else
       let l:match = findfile(l:pattern, l:dir . ';')
     endif
     if !empty(l:match)
+      let l:match = fnamemodify(l:match, ':p')
+      if l:match =~# '[\/]$'
+        let l:match = l:match[:-2]
+      endif
       exe 'lcd' fnamemodify(l:match, ':h')
       return
     endif
