@@ -27,6 +27,21 @@ let g:findroot_patterns = [
 \]
 ```
 
+It must be set of below's patterns.
+
+### Directory
+
+Example: `.git/`. It must have `/` suffixes.
+
+### File
+
+Example: `Rakefile`. It must NOT have `/` suffixes.
+
+### Wildcard
+
+Example: `*.c`. This does not handle `/` suffixes as directory or not.
+
+
 ## License
 
 MIT
