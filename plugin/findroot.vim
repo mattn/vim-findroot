@@ -2,16 +2,19 @@ function! s:goup(path, patterns) abort
   let l:path = a:path
   while 1
     for l:pattern in a:patterns
-      if l:pattern =~# '/$'
-        if isdirectory(l:path . l:pattern)
+      let l:current = l:path . '/' . l:pattern
+      if stridx(l:pattern, '*') != -1 && !empty(glob(l:current, 1))
+        return l:path
+      elseif l:pattern =~# '/$'
+        if isdirectory(l:current)
           return l:path
         endif
-      elseif filereadable(l:path . '/' . l:pattern)
+      elseif filereadable(l:current)
         return l:path
       endif
     endfor
     let l:next = fnamemodify(l:path, ':h')
-    if l:next == l:path
+    if l:next == l:path || (has('win32') && l:next =~# '^//[^/]\+$')
       break
     endif
     let l:path = l:next
@@ -25,7 +28,7 @@ function! s:findroot(echo) abort
     return
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
-  let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
+  let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml', 'project.clj', '*.csproj'])
   let l:dir = s:goup(l:dir, l:patterns)
   if empty(l:dir)
     return
