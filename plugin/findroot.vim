@@ -24,7 +24,7 @@ endfunction
 
 function! s:findroot(echo) abort
   let l:bufname = expand('%:p')
-  if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
+  if &buftype !=# '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
