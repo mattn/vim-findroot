@@ -28,7 +28,18 @@ function! s:findroot(echo) abort
     return
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
-  let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml', 'project.clj', '*.csproj'])
+  let l:patterns = get(g:, 'findroot_patterns', [
+  \  '.git/',
+  \  '.svn/',
+  \  '.hg/',
+  \  '.bzr/',
+  \  '.gitignore',
+  \  'Rakefile',
+  \  'pom.xml',
+  \  'project.clj',
+  \  '*.csproj',
+  \  '*.sln',
+  \])
   let l:dir = s:goup(l:dir, l:patterns)
   if empty(l:dir)
     return
