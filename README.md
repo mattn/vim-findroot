@@ -41,6 +41,11 @@ Example: `Rakefile`. It must NOT have `/` suffixes.
 
 Example: `*.c`. This does not handle `/` suffixes as directory or not.
 
+If you allow changing directory that goes up from sub-directory:
+
+```vim
+let g:findroot_not_for_subdir = 0
+```
 
 ## License
 

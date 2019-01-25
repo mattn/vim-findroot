@@ -44,6 +44,9 @@ function! s:findroot(echo) abort
   if empty(l:dir)
     return
   endif
+  if get(g:, 'findroot_not_for_subdir', 1) && stridx(fnamemodify(l:bufname, ':gs!\!/!'), l:dir) == 0
+    return
+  endif
   exe 'lcd' l:dir
   if a:echo
     echo l:dir
