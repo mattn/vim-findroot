@@ -31,15 +31,15 @@ It must be set of below's patterns.
 
 ### Directory
 
-Example: `.git/`. It must have `/` suffixes.
+Example: `.git/`. It must have `/` suffix.
 
 ### File
 
-Example: `Rakefile`. It must NOT have `/` suffixes.
+Example: `Rakefile`. It must NOT have `/` suffix.
 
 ### Wildcard
 
-Example: `*.c`. This does not handle `/` suffixes as directory or not.
+Example: `*.c`. This does not handle `/` suffix as directory or not.
 
 If you allow changing directory that goes up from sub-directory:
 
