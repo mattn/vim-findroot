@@ -1,6 +1,6 @@
 # vim-findroot
 
-Auto change directory to root directory of the file.
+Auto change directory to project root directory of the file.
 
 ## Configuration
 
