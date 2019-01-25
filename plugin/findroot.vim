@@ -1,3 +1,24 @@
+function! s:goup(path, patterns) abort
+  let l:path = a:path
+  while 1
+    for l:pattern in a:patterns
+      if l:pattern =~# '/$'
+        if isdirectory(l:path . l:pattern)
+          return l:path
+        endif
+      elseif filereadable(l:path . '/' . l:pattern)
+        return l:path
+      endif
+    endfor
+    let l:next = fnamemodify(l:path, ':h')
+    if l:next == l:path
+      break
+    endif
+    let l:path = l:next
+  endwhile
+  return ''
+endfunction
+
 function! s:findroot(echo) abort
   let l:bufname = expand('%:p')
   if &buftype != '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
@@ -5,18 +26,10 @@ function! s:findroot(echo) abort
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', ['.git/', '.gitignore', '.svn/', '.hg/', '.bzr/', 'pom.xml'])
-  for l:pattern in l:patterns 
-    if l:pattern =~# '/$'
-      let l:match = fnamemodify(finddir(l:pattern, l:dir . ';'), ':p')
-      let l:match = substitute(l:match, '[\/]$', '', '')
-    else
-      let l:match = fnamemodify(findfile(l:pattern, l:dir . ';'), ':p')
-    endif
-    if !empty(l:match)
-      let l:dir = fnamemodify(l:match, ':h')
-      break
-    endif
-  endfor
+  let l:dir = s:goup(l:dir, l:patterns)
+  if empty(l:dir)
+    return
+  endif
   exe 'lcd' l:dir
   if a:echo
     echo l:dir
