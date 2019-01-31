@@ -37,6 +37,8 @@ function! s:findroot(echo) abort
   \  'Rakefile',
   \  'pom.xml',
   \  'project.clj',
+  \  'package.json',
+  \  'manifest.json',
   \  '*.csproj',
   \  '*.sln',
   \])
