@@ -27,7 +27,7 @@ function! s:findroot(echo) abort
   if &buftype !=# '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return
   endif
-  let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!'), ' ')
+  let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!:gs!//!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', [
   \  '.git/',
   \  '.svn/',
