@@ -55,7 +55,7 @@ function! s:findroot(echo) abort
   endif
 endfunction
 
-command! FindRoot call s:findroot(1)
+command! -bar FindRoot call s:findroot(1)
 
 augroup FindRoot
   au!
