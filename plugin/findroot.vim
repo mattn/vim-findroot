@@ -1,4 +1,3 @@
-
 command! -bang -bar FindRoot call findroot#cd(empty('<bang>') ? 1 : 0)
 
 augroup FindRoot
