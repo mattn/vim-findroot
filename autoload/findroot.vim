@@ -22,10 +22,14 @@ function! s:goup(path, patterns) abort
   return ''
 endfunction
 
-function! findroot#find(echo) abort
-  let l:bufname = expand('%:p')
+function! findroot#find(...) abort
+  if a:0 != 0
+    let l:bufname = fnamemodify(expand(a:1), ':p')
+  else
+    let l:bufname = expand('%:p')
+  endif
   if &buftype !=# '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
-    return
+    return ''
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!:gs!//!/!'), ' ')
   let l:patterns = get(g:, 'findroot_patterns', [
@@ -42,7 +46,11 @@ function! findroot#find(echo) abort
   \  '*.csproj',
   \  '*.sln',
   \])
-  let l:dir = s:goup(l:dir, l:patterns)
+  return s:goup(l:dir, l:patterns)
+endfunction
+
+function! findroot#cd(echo) abort
+  let l:dir = findroot#find()
   if empty(l:dir)
     return
   endif
