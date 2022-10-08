@@ -3,7 +3,7 @@ function! s:goup(path, patterns) abort
   while 1
     for l:pattern in a:patterns
       let l:current = l:path . '/' . l:pattern
-      if stridx(l:pattern, '*') != -1 && !empty(glob(l:current, 1))
+      if stridx(l:pattern, '*') !=# -1 && !empty(glob(l:current, 1))
         return l:path
       elseif l:pattern =~# '/$'
         if isdirectory(l:current)
@@ -14,7 +14,7 @@ function! s:goup(path, patterns) abort
       endif
     endfor
     let l:next = fnamemodify(l:path, ':h')
-    if l:next == l:path || (has('win32') && l:next =~# '^//[^/]\+$')
+    if l:next ==# l:path || (has('win32') && l:next =~# '^//[^/]\+$')
       break
     endif
     let l:path = l:next
@@ -23,7 +23,7 @@ function! s:goup(path, patterns) abort
 endfunction
 
 function! findroot#find(...) abort
-  if a:0 != 0
+  if a:0 !=# 0
     let l:bufname = fnamemodify(expand(a:1), ':p')
   else
     let l:bufname = expand('%:p')
@@ -32,6 +32,7 @@ function! findroot#find(...) abort
     return ''
   endif
   let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!:gs!//!/!'), ' ')
+
   let l:patterns = get(g:, 'findroot_patterns', [
   \  '.git/',
   \  '.svn/',
@@ -46,6 +47,7 @@ function! findroot#find(...) abort
   \  '*.csproj',
   \  '*.sln',
   \])
+  let l:patterns = a:0 ==# 2 && type(a:2) ==# v:t_list ? a:2 + l:patterns : l:patterns
   return s:goup(l:dir, l:patterns)
 endfunction
 
