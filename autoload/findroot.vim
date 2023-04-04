@@ -46,6 +46,7 @@ function! findroot#find(...) abort
   \  'manifest.json',
   \  '*.csproj',
   \  '*.sln',
+  \  'Makefile',
   \])
   let l:patterns = a:0 ==# 2 && type(a:2) ==# v:t_list ? a:2 + l:patterns : l:patterns
   return s:goup(l:dir, l:patterns)
