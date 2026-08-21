@@ -1,9 +1,21 @@
+function! s:escape_glob_path(path) abort
+  let l:path = escape(a:path, ',*?')
+  if stridx(&isfname, '[') < 0
+    return l:path
+  endif
+  if has('win32')
+    return substitute(l:path, '\[', '[[]', 'g')
+  endif
+  return escape(l:path, '[')
+endfunction
+
 function! s:goup(path, patterns) abort
   let l:path = a:path
   while 1
     for l:pattern in a:patterns
       let l:current = l:path . '/' . l:pattern
-      if stridx(l:pattern, '*') !=# -1 && !empty(glob(l:current, 1))
+      if stridx(l:pattern, '*') !=# -1
+            \ && !empty(glob(s:escape_glob_path(l:path) . '/' . l:pattern, 1))
         return l:path
       elseif l:pattern =~# '/$'
         if isdirectory(l:current)
@@ -31,7 +43,7 @@ function! findroot#find(...) abort
   if &buftype !=# '' || empty(l:bufname) || stridx(l:bufname, '://') !=# -1
     return ''
   endif
-  let l:dir = escape(fnamemodify(l:bufname, ':p:h:gs!\!/!:gs!//!/!'), ' ')
+  let l:dir = fnamemodify(l:bufname, ':p:h:gs!\!/!:gs!//!/!')
 
   let l:patterns = get(g:, 'findroot_patterns', [
   \  '.git/',
