@@ -1,21 +1,21 @@
-function! s:escape_glob_path(path) abort
-  let l:path = escape(a:path, ',*?')
-  if stridx(&isfname, '[') < 0
-    return l:path
-  endif
-  if has('win32')
-    return substitute(l:path, '\[', '[[]', 'g')
-  endif
-  return escape(l:path, '[')
-endfunction
+if has('win32')
+  function! s:escape_glob_path(path) abort
+    return substitute(a:path, '\[', '[[]', 'g')
+  endfunction
+else
+  function! s:escape_glob_path(path) abort
+    return escape(a:path, '\*?[]{},$`')
+  endfunction
+endif
 
 function! s:goup(path, patterns) abort
   let l:path = a:path
   while 1
+    let l:glob_path = s:escape_glob_path(l:path)
     for l:pattern in a:patterns
       let l:current = l:path . '/' . l:pattern
       if stridx(l:pattern, '*') !=# -1
-            \ && !empty(glob(s:escape_glob_path(l:path) . '/' . l:pattern, 1))
+            \ && !empty(glob(l:glob_path . '/' . l:pattern, 1))
         return l:path
       elseif l:pattern =~# '/$'
         if isdirectory(l:current)
